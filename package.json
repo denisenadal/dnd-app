@@ -1,0 +1,27 @@
+{
+  "name": "dnd-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "run": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/denisenadal/dnd-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/denisenadal/dnd-app/issues"
+  },
+  "homepage": "https://github.com/denisenadal/dnd-app#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "depd": "^2.0.0",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.2",
+    "url": "^0.11.0"
+  }
+}

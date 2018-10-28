@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>dnd stuffs</title>
+	<link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+	<header>
+		<div class="container"></div>
+	</header>
+	<div class="container">
+		<main>
+			<div id="savedRolls">
+				<h2>Saved Rolls</h2>
+				<div id="newRollTemplate" class="newRoll">
+					<p class="caption">Create a new roll</p>
+					<input type="text" class="rollName newRollName" placeholder="Name your Roll">
+					<input type="number" class="diceNum newDiceNum">
+					<input type="number" class="newDieSides dieSides">
+					<input type="button" value="Save">
+					<fieldset id="modTemplate" class="Newmod mod">
+						<p class="caption">Add a modifier?</p>
+						<input type="text" class="newModName">
+						<input type="number" class="newModValue">
+						<input type="button" value="Add Mod">
+					</fieldset>
+				</div>
+				<div id="roll-{{roll.id}}" class="savedRoll">
+					<h3>{{roll.name}}</h3>
+					<p>{{roll doFormula}}</p>
+					<input id="edit-{{roll.id}}" class="edit-roll" type="button" value="edit" data-roll="{{roli.id}}">
+					<input id="delete-{{roll.id}}" class="delete-roll" type="button" value="delete" data-roll="{{roli.id}}">
+					<input id="do-{{roll.id}}" class="doRoll" type="button" value="Roll" data-roll="{{roli.id}}">
+				</div>
+			</div>
+			<div id="rollBoard">
+				<h1>Roll Board</h1>
+			</div>
+		</main>
+		<aside>
+			<h2>Past Rolls</h2>
+			<ul id="past_rolls">
+
+			</ul>
+		</aside>
+	</div>
+	<footer>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+		</script>
+		<script src="widgets.js"></script>
+	</footer>
+</body>
+
+</html>
