@@ -1,0 +1,48 @@
+htnl,
+body,
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main.section {
+  flex-grow: 1;
+}
+
+.columns {
+  align-items: stretch;
+}
+
+.highlight {
+  background: rgba(255, 0, 0, 0.5);
+  color: red;
+}
+
+.footer {
+  padding: 1.5rem !important;
+}
+
+strong {
+  color: inherit !important;
+}
+
+.card-content .level {
+  background-color: white;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0;
+  padding: 1rem;
+}
+
+.card-content .subtitle {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+  padding-bottom: 1.5rem;
+}
+
+.card-content > div {
+  margin-bottom: 1.5rem;
+}
+
+.card-content > div:not(:first-of-type) {
+  margin-top: 3rem;
+}
