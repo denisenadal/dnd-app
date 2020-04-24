@@ -1,6 +1,6 @@
 <template>
     <div>
-<progress class="progress is-large is-primary"
+  <progress class="progress is-large is-primary"
               max="100"></progress>
     <strong class="has-text-primary">Restarting
         Current Round</strong>
@@ -9,9 +9,7 @@
 <script>
     export default {
         name: "loading",
-        data: function () {
-            return;
-        },
+        data: {},
         computed: {},
         methods: {}
     }
