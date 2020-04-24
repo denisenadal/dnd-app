@@ -42,6 +42,7 @@
         methods: {
             removeChar: function (char) {
                 this.characters = _.filter(this.characters, function (o) { return o.name !== char.name });
+                this.$emit('clicked', this.characters)
             },
           takeTurn: function(){}
         },

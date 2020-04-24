@@ -98,9 +98,9 @@
 </template>
 
 <script>
-  import loading from './components/loading.vue';
-  import initList from './components/initList.vue';
-  import initListItem from './components/initListItem.vue';
+  import loading from './loading.vue';
+  import initList from './initList.vue';
+  import initListItem from './initListItem.vue';
   
     export default {
         components: {
