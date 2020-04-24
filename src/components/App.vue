@@ -101,13 +101,13 @@
 <script>
   import loading from './loading.vue';
   import initList from './initList.vue';
-  import initListItem from './initListItem.vue';
+  import addForm from './addForm.vue';
   
     export default {
         components: {
           "loading": loading,
           "init-list": initList,
-          "init-list-item": initListItem
+          "add-form": addForm
         },
         data: function () {
             return {

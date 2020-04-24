@@ -16,7 +16,7 @@
                         ⛔️</button>
                     <button class="button level-item  is-primary is-outlined "
                             v-on:click="takeTurn(char)"
-                            v-bind:class="{'is-invisible': index !== 0 || round === 'current'}">👋
+                            v-bind:class="active(char)">👋
                         Take
                         Turn</button>
                 </div>
@@ -34,11 +34,17 @@
             }
         },
         methods: {
-            removeChar: function (char) {
+          removeChar: function (char) {
                 this.$emit('removed', char, this.round)
             },
           takeTurn: function(char){
             this.$emit('take-turn', char)
+          },
+          active: function(char){
+            if( this.round === "current" && _.indexOf(this.characters, char) === 0){
+              return ""
+            }
+            return "is-invisible";
           }
         },
         props: ['round','characters']
