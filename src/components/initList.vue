@@ -28,12 +28,6 @@
 <script>
     export default {
         name: "init-list",
-        data: function(){
-          return {
-            characters: [],
-            round: "current"
-          }
-        },
         computed: { 
              charactersSorted: function () {
                 return _.orderBy(this.characters, 'score', 'desc')
@@ -41,10 +35,13 @@
         },
         methods: {
             removeChar: function (char) {
-                this.$emit('removed-char', char, this.round)
+                this.$emit('removed', char, this.round)
             },
-          takeTurn: function(){}
-        }
+          takeTurn: function(char){
+            this.$emit('take-turn', char)
+          }
+        },
+        props: ['round','characters']
     }
 </script>
 

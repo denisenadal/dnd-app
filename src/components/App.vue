@@ -78,11 +78,12 @@
                     <init-list v-if="!loading && currentRound.length"
                                 round="current"
                                 v-bind:characters="currentRound"
-                                @removed="removeChar"></init-list>
+                                @removed="removeChar"
+                                @take-turn="takeTurn"></init-list>
                     <init-list v-if="!loading && nextRound.length"
                                round="next"
                                v-bind:characters="nextRound"
-                               v-bind:take-turn="takeTurn"></init-list>
+                               @removed="removeChar"></init-list>
                     <button class="button  is-pulled-right"
                             v-if="currentRound.length && nextRound.length"
                             v-on:click="resetRound()">Reset
