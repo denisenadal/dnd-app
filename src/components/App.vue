@@ -70,7 +70,7 @@
             <section class="column is-half-tablet is-two-thirds-desktop">
                 <div class="card shadow-sm">
                     <div class="card-content is-clearfix"
-                         v-if="!loading">
+                         v-if="!isLoading">
                         <h2 class="title">Initiative Order</h2>
                         <em v-if="!currentRound.length && !nextRound.length"
                             class="text-muted">Add a character to get
@@ -129,7 +129,7 @@
                             Round 💫</button>
                     </div>
                     <div class="card-content has-text-centered"
-                         v-if="loading">
+                         v-if="isLoading">
                         <loading></loading>
                     </div>
                 </div>
@@ -139,7 +139,16 @@
 </template>
 
 <script>
+  import loading from './loading.vue';
+  import initList from './initList.vue';
+  import initListItem from './initListItem.vue';
+  
     export default {
+      components: {
+        loading: loading,
+        initList: initList,
+        initListItem: initListItem
+      },
         data: function () {
             return {
                 formEntry: {
@@ -150,7 +159,7 @@
                 currentRound: [],
                 nextRound: [],
                 errors: [],
-                loading: false
+                isLoading: false
 
             }
         },
@@ -220,11 +229,11 @@
                 this.currentRound = _.filter(this.currentRound, function (o) { return o.name !== char.name });
 
                 if (!this.currentRound.length && this.nextRound.length) {
-                    this.loading = true;
+                    this.isLoading = true;
                     var vm = this;
                     setTimeout(function () {
                         vm.resetRound();
-                        vm.loading = false;
+                        vm.isLoading = false;
                     }, 1000);
                 }
 
