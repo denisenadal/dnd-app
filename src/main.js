@@ -5,19 +5,17 @@ import _ from 'lodash';
 import 'normalize.css';
 import "bulma/css/bulma.css";
 
-import loading from './components/loading.vue';
-import initList from './components/initList.vue';
-import initListItem from './components/initListItem.vue';
-
+Vue.filter('capitalize', function (value) {
+  if (!value) return ''
+  value = value.toString()
+  return value.charAt(0).toUpperCase() + value.slice(1)
+})
 
 
 var app = new Vue({
   template: '<app></app>',
   components: {
-    App,
-    loading,
-    initList,
-    initListItem
+    App
   },
   el: '#app'
 });

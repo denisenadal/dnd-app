@@ -5,61 +5,51 @@
                 <div class="card">
                     <div class="card-content">
                         <h2 class="title">Add Character</h2>
-                        <div v-if="errors.length"
-                                class="message is-danger">
-                            <p class="message-body content">
-                                <strong>Please correct the following
-                                    error(s):</strong>
-                                <ul>
-                                    <li v-for="error in errors">
-                                        {{ error }}</li>
-                                </ul>
-                            </p>
-                        </div>
+                      <form-errors v-if="errors.length" v-bind:errors="errors"></form-errors>
                         <form action=""
-                                @submit="addChar">
+                              @submit="addChar">
                             <div class="field">
                                 <label class="label"
-                                        for="name">Character Name</label>
+                                       for="name">Character Name</label>
                                 <div class="control">
                                     <input v-model="formEntry.name"
-                                            type="text"
-                                            placeholder="enter a name"
-                                            class="input"
-                                            name="name"
-                                            id="name"
-                                            ref="name"
-                                            autofocus />
+                                           type="text"
+                                           placeholder="enter a name"
+                                           class="input"
+                                           name="name"
+                                           id="name"
+                                           ref="name"
+                                           autofocus />
                                 </div>
                             </div>
                             <div class="field">
                                 <label class="label"
-                                        for="score">Initiative
+                                       for="score">Initiative
                                     Score</label>
                                 <div class="control">
                                     <input v-model="formEntry.score"
-                                            type="text"
-                                            placeholder="enter a number"
-                                            class="input"
-                                            name="score"
-                                            id="score"
-                                            autocomplete="false" />
+                                           type="text"
+                                           placeholder="enter a number"
+                                           class="input"
+                                           name="score"
+                                           id="score"
+                                           autocomplete="false" />
                                 </div>
                             </div>
                             <div class="field is-grouped">
                                 <div class="control is-expanded">
                                     <label class="checkbox"
-                                            for="npc">
+                                           for="npc">
                                         <input type="checkbox"
-                                                id="npc"
-                                                name="npc"
-                                                v-model="formEntry.npc">
+                                               id="npc"
+                                               name="npc"
+                                               v-model="formEntry.npc">
                                         NPC?</label>
                                 </div>
                                 <div class="control text-right">
                                     <input value="add"
-                                            type="submit"
-                                            class="button is-primary">
+                                           type="submit"
+                                           class="button is-primary">
                                 </div>
                             </div>
                         </form>
@@ -69,27 +59,28 @@
             </section>
             <section class="column is-half-tablet is-two-thirds-desktop">
                 <div class="card shadow-sm">
-                    <div class="card-content">
+                    <div class="card-content is-clearfix">
                         <h2 class="title">Initiative Order</h2>
                         <em v-if="!currentRound.length && !nextRound.length"
                             class="text-muted">Add a character to get
                             started</em>
-                    </div>
-                    <init-list v-if="!loading && currentRound.length"
-                                :round="current"
-                                :characters="currentRoundSorted"
-                                :takeTurn="takeTurn"></init-list>
-                    <init-list v-if="!loading && nextRound.length"
-                               :round="next"
-                               :characters="nextRoundSorted"
-                               :takeTurn="takeTurn"></init-list>
-                    <button class="button  is-pulled-right"
-                            v-if="currentRound.length && nextRound.length"
-                            v-on:click="resetRound()">Reset
-                        Round 💫</button>
-                    <div class="card-content has-text-centered"
-                         v-if="loading">
-                        <loading></loading>
+                        <init-list v-if="!loading && currentRound.length"
+                                   round="current"
+                                   v-bind:characters="currentSorted"
+                                   @removed="removeChar"
+                                   @take-turn="takeTurn"></init-list>
+                        <init-list v-if="!loading && nextRound.length"
+                                   round="next"
+                                   v-bind:characters="nextSorted"
+                                   @removed="removeChar"></init-list>
+                        <button class="button  is-pulled-right"
+                                v-if="currentRound.length && nextRound.length"
+                                v-on:click="resetRound()">Reset
+                            Round 💫</button>
+                        <div class="has-text-centered"
+                             v-if="loading">
+                            <loading></loading>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -98,7 +89,18 @@
 </template>
 
 <script>
+    import loading from './loading.vue';
+    import initList from './initList.vue';
+    import form from './form.vue';
+    import formErrors from './formErrors.vue';
+
     export default {
+        components: {
+            "loading": loading,
+            "init-list": initList,
+            "form": form,
+            "form-errors":formErrors
+        },
         data: function () {
             return {
                 formEntry: {
@@ -118,10 +120,10 @@
             charsByName: function (round) {
                 return _.orderBy(this[round], 'name', 'asc')
             },
-            currentRoundSorted: function () {
+          currentSorted: function () {
                 return _.orderBy(this.currentRound, 'score', 'desc')
             },
-            nextRoundSorted: function () {
+          nextSorted: function () {
                 return _.orderBy(this.nextRound, 'score', 'desc')
             }
         },
@@ -169,6 +171,10 @@
                     this.formEntry = this.initChar();
                     this.$refs.name.focus();
                 }
+            },
+            removeChar: function (char, round) {
+                var key = round + 'Round';
+                this[key] = _.filter(this[key], function (o) { return o.name !== char.name });
             },
             takeTurn: function (char) {
                 this.nextRound.push(char);

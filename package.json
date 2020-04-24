@@ -16,7 +16,7 @@
     "webpack-dev-server": "^2.4.1",
     "vue-loader": "^11.1.4",
     "vue-template-compiler": "^2.2.4",
-    "css-loader": "^0.27.3",
+    "css-loader": "^3.5.2",
     "normalize.css": "^5.0.0",
     "style-loader": "^0.13.2"
   },
