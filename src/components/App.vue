@@ -18,15 +18,15 @@
                         <em v-if="!currentRound.length && !nextRound.length"
                             class="text-muted">Add a character to get
                             started</em>
-                        <init-list v-if="!loading && currentRound.length"
+                        <io-list v-if="!loading && currentRound.length"
                                    round="current"
                                    v-bind:characters="currentSorted"
                                    @removed="removeChar"
-                                   @take-turn="takeTurn"></init-list>
-                        <init-list v-if="!loading && nextRound.length"
+                                   @take-turn="takeTurn"></io-list>
+                        <io-list v-if="!loading && nextRound.length"
                                    round="next"
                                    v-bind:characters="nextSorted"
-                                   @removed="removeChar"></init-list>
+                                   @removed="removeChar"></io-list>
                         <button class="button  is-pulled-right"
                                 v-if="currentRound.length && nextRound.length"
                                 v-on:click="resetRound()">Reset
@@ -44,14 +44,14 @@
 
 <script>
     import loading from './loading.vue';
-    import initList from './initList.vue';
+    import ioList from './ioList.vue';
     import ioForm from './ioForm.vue';
     import formErrors from './formErrors.vue';
 
     export default {
         components: {
             "loading": loading,
-            "init-list": initList,
+            "io-list": ioList,
             "ioForm": ioForm,
             "form-errors":formErrors
         },

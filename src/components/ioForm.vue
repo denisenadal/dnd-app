@@ -53,7 +53,7 @@
         data: function(){
           return {
             formEntry: {
-                    name: '',
+                     name: '',
                     score: '',
                     npc: false
                 },

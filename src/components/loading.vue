@@ -8,10 +8,7 @@
 </template>
 <script>
     export default {
-        name: "loading",
-        data: {},
-        computed: {},
-        methods: {}
+        name: "loading"
     }
 </script>
 
