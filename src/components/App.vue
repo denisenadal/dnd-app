@@ -6,53 +6,7 @@
                     <div class="card-content">
                         <h2 class="title">Add Character</h2>
                       <form-errors v-if="errors.length" v-bind:errors="errors"></form-errors>
-                        <form action=""
-                              @submit="addChar">
-                            <div class="field">
-                                <label class="label"
-                                       for="name">Character Name</label>
-                                <div class="control">
-                                    <input v-model="formEntry.name"
-                                           type="text"
-                                           placeholder="enter a name"
-                                           class="input"
-                                           name="name"
-                                           id="name"
-                                           ref="name"
-                                           autofocus />
-                                </div>
-                            </div>
-                            <div class="field">
-                                <label class="label"
-                                       for="score">Initiative
-                                    Score</label>
-                                <div class="control">
-                                    <input v-model="formEntry.score"
-                                           type="text"
-                                           placeholder="enter a number"
-                                           class="input"
-                                           name="score"
-                                           id="score"
-                                           autocomplete="false" />
-                                </div>
-                            </div>
-                            <div class="field is-grouped">
-                                <div class="control is-expanded">
-                                    <label class="checkbox"
-                                           for="npc">
-                                        <input type="checkbox"
-                                               id="npc"
-                                               name="npc"
-                                               v-model="formEntry.npc">
-                                        NPC?</label>
-                                </div>
-                                <div class="control text-right">
-                                    <input value="add"
-                                           type="submit"
-                                           class="button is-primary">
-                                </div>
-                            </div>
-                        </form>
+
                     </div>
                 </div>
 
@@ -91,14 +45,14 @@
 <script>
     import loading from './loading.vue';
     import initList from './initList.vue';
-    import form from './form.vue';
+    import ioForm from './ioForm.vue';
     import formErrors from './formErrors.vue';
 
     export default {
         components: {
             "loading": loading,
             "init-list": initList,
-            "form": form,
+            "ioForm": ioForm,
             "form-errors":formErrors
         },
         data: function () {
