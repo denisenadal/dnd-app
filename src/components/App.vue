@@ -69,67 +69,26 @@
             </section>
             <section class="column is-half-tablet is-two-thirds-desktop">
                 <div class="card shadow-sm">
-                    <div class="card-content is-clearfix"
-                         v-if="!isLoading">
+                    <div class="card-content">
                         <h2 class="title">Initiative Order</h2>
                         <em v-if="!currentRound.length && !nextRound.length"
                             class="text-muted">Add a character to get
                             started</em>
-                    
-                        <div v-if="currentRound.length">
-                            <h3 class="subtitle is-marginless">Current
-                                Round</h3>
-                            <ul class="">
-                                <li v-for="(char,index) in currentRoundSorted"
-                                    class="level is-marginless"
-                                    v-bind:class="{ 'has-text-danger': char.npc }">
-                                    <strong class="level-left">{{char.name}}</strong>
-                                    <div class="level-right">
-                                        <span class="level-item">{{char.score}}</span>
-                                        <span class="level-item"></span>
-                                        <button class="level-item"
-                                                aria-label="delete"
-                                                v-on:click="removeChar(char)">
-                                            ⛔️</button>
-                                        <button class="button level-item  is-primary is-outlined "
-                                                v-on:click="takeTurn(char)"
-                                                v-bind:class="{'is-invisible': index !== 0}">👋
-                                            Take
-                                            Turn</button>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div v-if="nextRound.length">
-                            <h3 class="subtitle is-marginless">Next
-                                Round</h3>
-                            <ul class="">
-                                <li v-for="char in nextRoundSorted"
-                                    class="level is-marginless"
-                                    v-bind:class="{ 'has-text-danger': char.npc }">
-                                    <strong class="level-left">{{char.name}}</strong>
-                                    <div class="level-right">
-                                        <span class="level-item">{{char.score}}</span>
-                                        <span class="level-item"></span>
-                                        <button class="level-item"
-                                                aria-label="delete"
-                                                v-on:click="removeChar(char)">
-                                            ⛔️</button>
-                                        <button
-                                                class="button level-item  is-primary is-outlined is-invisible">👋
-                                            Take
-                                            Turn</button>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <button class="button  is-pulled-right"
-                                v-if="currentRound.length && nextRound.length"
-                                v-on:click="resetRound()">Reset
-                            Round 💫</button>
                     </div>
+                    <init-list v-if="!loading && currentRound.length"
+                                :round="current"
+                                :characters="currentRoundSorted"
+                                :takeTurn="takeTurn"></init-list>
+                    <init-list v-if="!loading && nextRound.length"
+                               :round="next"
+                               :characters="nextRoundSorted"
+                               :takeTurn="takeTurn"></init-list>
+                    <button class="button  is-pulled-right"
+                            v-if="currentRound.length && nextRound.length"
+                            v-on:click="resetRound()">Reset
+                        Round 💫</button>
                     <div class="card-content has-text-centered"
-                         v-if="isLoading">
+                         v-if="loading">
                         <loading></loading>
                     </div>
                 </div>
@@ -139,16 +98,7 @@
 </template>
 
 <script>
-  import loading from './loading.vue';
-  import initList from './initList.vue';
-  import initListItem from './initListItem.vue';
-  
     export default {
-      components: {
-        loading: loading,
-        initList: initList,
-        initListItem: initListItem
-      },
         data: function () {
             return {
                 formEntry: {
@@ -159,7 +109,7 @@
                 currentRound: [],
                 nextRound: [],
                 errors: [],
-                isLoading: false
+                loading: false
 
             }
         },
@@ -220,24 +170,18 @@
                     this.$refs.name.focus();
                 }
             },
-            removeChar: function (char) {
-                this.currentRound = _.filter(this.currentRound, function (o) { return o.name !== char.name });
-                this.nextRound = _.filter(this.nextRound, function (o) { return o.name !== char.name });
-            },
             takeTurn: function (char) {
                 this.nextRound.push(char);
                 this.currentRound = _.filter(this.currentRound, function (o) { return o.name !== char.name });
 
                 if (!this.currentRound.length && this.nextRound.length) {
-                    this.isLoading = true;
+                    this.loading = true;
                     var vm = this;
                     setTimeout(function () {
                         vm.resetRound();
-                        vm.isLoading = false;
+                        vm.loading = false;
                     }, 1000);
                 }
-
-
             },
             resetRound: function () {
                 this.currentRound = _.concat(this.currentRound, this.nextRound);
