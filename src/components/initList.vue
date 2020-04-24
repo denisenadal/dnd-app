@@ -15,7 +15,8 @@
 
         methods: {
            
-        }
+        },
+      props: ['round','']
     }
 </script>
 
