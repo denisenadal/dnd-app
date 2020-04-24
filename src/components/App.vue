@@ -6,7 +6,7 @@
                     <div class="card-content">
                         <h2 class="title">Add Character</h2>
                       <form-errors v-if="errors.length" v-bind:errors="errors"></form-errors>
-                      <io-form v-bind:characters="allCharacters"></io-form>
+                      <io-form v-bind:characters="allCharacters" @validation="handleErrors" @newchar="addChar"></io-form>
                     </div>
                 </div>
 
@@ -86,30 +86,18 @@
         },
 
         methods: {
-            initChar: function (char) {
-                return {
-                    name: _.get(char, 'name', ''),
-                    score: parseInt(_.get(char, 'score', false)) || '',
-                    npc: _.get(char, 'npc', false),
-                };
-            },
-            handleErrors: function(error){
-              this.errors = [];
+            handleErrors: function(isValidated, errors){
+              this.isValidated = isValidated;
               
-              if (error){
-                this.errors.push(error);
+              if (errors){
+                this.errors = errors;
+              }
+              else {
+                this.errors = [];
               }
             },
-            addChar: function (e) {
-                e.preventDefault();
-                this.validate();
-
-                if (this.isValidated) {
-                    var newChar = this.initChar(this.formEntry);
+            addChar: function (newChar) {
                     this.currentRound.push(newChar);
-                    this.formEntry = this.initChar();
-                    this.$refs.name.focus();
-                }
             },
             removeChar: function (char, round) {
                 var key = round + 'Round';

@@ -62,22 +62,34 @@
           };
         },
         methods: {
-           addChar: function(){
-             //validate
-             //emit new char?
-             //clear form
-           },
+          initChar: function (char) {
+                return {
+                    name: _.get(char, 'name', ''),
+                    score: parseInt(_.get(char, 'score', false)) || '',
+                    npc: _.get(char, 'npc', false),
+                };
+            },
+           addChar: function (e) {
+                e.preventDefault();
+                this.validate();
+
+                if (this.isValidated) {
+                    var newChar = this.initChar(this.formEntry);
+                    this.formEntry = this.initChar();
+                    this.$refs.name.focus();
+                  
+                  this.$emit('newchar',newChar);
+                }
+            },
           validate: function () {
                 if (this.formEntry.name && this.formEntry.score) {
                     var name = this.formEntry.name
                     if (_.find(this.characters, function (o) { return o.name === name })) {
                         this.errors.push('Name must be unique');
                         this.isValidated = false;
-
                     }
                     else {
                         this.isValidated = true;
-
                     }
                 }
                 else {
