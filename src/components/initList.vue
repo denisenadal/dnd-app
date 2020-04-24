@@ -1,5 +1,5 @@
 <template>
-    <div class="card-content is-clearfix">
+    <div class="mt">
         <h3 class="subtitle is-marginless">{{ round| capitalize}}
             Round</h3>
         <ul class="">
