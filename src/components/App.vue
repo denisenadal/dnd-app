@@ -1,5 +1,5 @@
 <template>
-    <div id="app" class="container">
+    <div class="container">
         <div class="columns is-tablet">
             <section class="column is-half-tablet is-one-third-desktop">
                 <div class="card">
@@ -139,10 +139,6 @@
 </template>
 
 <script>
-    import loading from 'loading.vue';
-    import initList from 'initList.vue';
-    import initListItem from 'initListItem.vue';
-
     export default {
         data: function () {
             return {
