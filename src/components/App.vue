@@ -6,7 +6,7 @@
                     <div class="card-content">
                         <h2 class="title">Add Character</h2>
                       <form-errors v-if="errors.length" v-bind:errors="errors"></form-errors>
-
+                      <io-form v-bind:characters="allCharacters"></io-form>
                     </div>
                 </div>
 
@@ -79,7 +79,10 @@
             },
           nextSorted: function () {
                 return _.orderBy(this.nextRound, 'score', 'desc')
-            }
+            },
+          allCharacters: function(){
+              return _.concat(this.nextRound, this.currentRound);
+          }
         },
 
         methods: {
@@ -90,30 +93,12 @@
                     npc: _.get(char, 'npc', false),
                 };
             },
-            validate: function () {
-                this.errors = [];
-                if (this.formEntry.name && this.formEntry.score) {
-                    var name = this.formEntry.name
-                    if (_.find(this.currentRound, function (o) { return o.name === name })) {
-                        this.errors.push('Name must be unique');
-                        this.isValidated = false;
-
-                    }
-                    else {
-                        this.isValidated = true;
-
-                    }
-                }
-                else {
-                    if (!this.formEntry.name) {
-                        this.errors.push('Character name required');
-                    }
-                    if (!this.formEntry.score) {
-                        this.errors.push('Initiative score required');
-                    }
-                    this.isValidated = false;
-                }
-                return;
+            handleErrors: function(error){
+              this.errors = [];
+              
+              if (error){
+                this.errors.push(error);
+              }
             },
             addChar: function (e) {
                 e.preventDefault();

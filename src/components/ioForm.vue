@@ -52,12 +52,48 @@
     export default {
         data: function(){
           return {
-            newChar:
+            formEntry: {
+                    name: '',
+                    score: '',
+                    npc: false
+                },
+            errors: [],
+            isValidated: false
           };
         },
         methods: {
-           addChar(){}
-        }
+           addChar: function(){
+             //validate
+             //emit new char?
+             //clear form
+           },
+          validate: function () {
+                if (this.formEntry.name && this.formEntry.score) {
+                    var name = this.formEntry.name
+                    if (_.find(this.characters, function (o) { return o.name === name })) {
+                        this.errors.push('Name must be unique');
+                        this.isValidated = false;
+
+                    }
+                    else {
+                        this.isValidated = true;
+
+                    }
+                }
+                else {
+                    if (!this.formEntry.name) {
+                        this.errors.push('Character name required');
+                    }
+                    if (!this.formEntry.score) {
+                        this.errors.push('Initiative score required');
+                    }
+                    this.isValidated = false;
+                }
+                this.$emit('validation', this.isValidated, this.errors);
+                return;
+            },
+        },
+      props: ["characters"]
     }
 </script>
 
