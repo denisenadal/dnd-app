@@ -27,16 +27,23 @@
 
 <script>
     export default {
-        data:{ },
+        name: "init-list",
+        data: function(){
+          return {
+            characters: [],
+            round: "current"
+          }
+        },
         computed: { 
              charactersSorted: function () {
-                return _.orderBy(this.characters 'score', 'desc')
+                return _.orderBy(this.characters, 'score', 'desc')
             }
         },
         methods: {
             removeChar: function (char) {
                 this.characters = _.filter(this.characters, function (o) { return o.name !== char.name });
-            }
+            },
+          takeTurn: function(){}
         },
         props: ['round','characters','takeTurn']
     }

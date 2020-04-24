@@ -76,11 +76,11 @@
                             started</em>
                     </div>
                     <init-list v-if="!loading && currentRound.length"
-                                v-bind:round="current"
+                                round="current"
                                 v-bind:characters="currentRound"
                                 v-bind:take-turn="takeTurn"></init-list>
                     <init-list v-if="!loading && nextRound.length"
-                               v-bind:round="next"
+                               round="next"
                                v-bind:characters="nextRound"
                                v-bind:take-turn="takeTurn"></init-list>
                     <button class="button  is-pulled-right"
@@ -98,7 +98,16 @@
 </template>
 
 <script>
+  import loading from './components/loading.vue';
+  import initList from './components/initList.vue';
+  import initListItem from './components/initListItem.vue';
+  
     export default {
+        components: {
+          "loading": loading,
+          "init-list": initList,
+          "init-list-item": initListItem
+        },
         data: function () {
             return {
                 formEntry: {
@@ -117,12 +126,6 @@
         computed: {
             charsByName: function (round) {
                 return _.orderBy(this[round], 'name', 'asc')
-            },
-            currentRoundSorted: function () {
-                return _.orderBy(this.currentRound, 'score', 'desc')
-            },
-            nextRoundSorted: function () {
-                return _.orderBy(this.nextRound, 'score', 'desc')
             }
         },
 
