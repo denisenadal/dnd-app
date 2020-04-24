@@ -1,8 +1,8 @@
-import Vue from 'vue'
-import App from './components/App.vue'
-import _ from 'lodash'
+import Vue from 'vue';
+import App from './components/App.vue';
+import _ from 'lodash';
 
-import normalize from 'normalize.css'
+import 'normalize.css';
 import "bulma/css/bulma.css";
 
 import loading from './components/loading.vue';
