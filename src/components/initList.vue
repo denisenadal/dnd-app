@@ -41,12 +41,10 @@
         },
         methods: {
             removeChar: function (char) {
-                this.characters = _.filter(this.characters, function (o) { return o.name !== char.name });
-                this.$emit('clicked', this.characters)
+                this.$emit('removed-char', char, this.round)
             },
           takeTurn: function(){}
-        },
-        props: ['round','characters','takeTurn']
+        }
     }
 </script>
 

@@ -5,6 +5,12 @@ import _ from 'lodash';
 import 'normalize.css';
 import "bulma/css/bulma.css";
 
+Vue.filter('capitalize', function (value) {
+  if (!value) return ''
+  value = value.toString()
+  return value.charAt(0).toUpperCase() + value.slice(1)
+})
+
 
 var app = new Vue({
   template: '<app></app>',

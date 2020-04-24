@@ -78,7 +78,7 @@
                     <init-list v-if="!loading && currentRound.length"
                                 round="current"
                                 v-bind:characters="currentRound"
-                                v-bind:take-turn="takeTurn"></init-list>
+                                @removed="removeChar"></init-list>
                     <init-list v-if="!loading && nextRound.length"
                                round="next"
                                v-bind:characters="nextRound"
@@ -172,6 +172,10 @@
                     this.formEntry = this.initChar();
                     this.$refs.name.focus();
                 }
+            },
+            removeChar: function (char, round) {
+                var key = round+'Round';
+                this[key] = _.filter(this[key], function (o) { return o.name !== char.name });
             },
             takeTurn: function (char) {
                 this.nextRound.push(char);
