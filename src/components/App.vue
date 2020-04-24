@@ -67,16 +67,15 @@
                 </div>
 
             </section>
-            <section
-                        class="column is-half-tablet is-two-thirds-desktop">
+            <section class="column is-half-tablet is-two-thirds-desktop">
                 <div class="card shadow-sm">
                     <div class="card-content is-clearfix"
-                            v-if="!loading">
+                         v-if="!loading">
                         <h2 class="title">Initiative Order</h2>
                         <em v-if="!currentRound.length && !nextRound.length"
                             class="text-muted">Add a character to get
                             started</em>
-
+                    
                         <div v-if="currentRound.length">
                             <h3 class="subtitle is-marginless">Current
                                 Round</h3>
@@ -84,11 +83,9 @@
                                 <li v-for="(char,index) in currentRoundSorted"
                                     class="level is-marginless"
                                     v-bind:class="{ 'has-text-danger': char.npc }">
-                                    <strong
-                                            class="level-left">{{char.name}}</strong>
+                                    <strong class="level-left">{{char.name}}</strong>
                                     <div class="level-right">
-                                        <span
-                                                class="level-item">{{char.score}}</span>
+                                        <span class="level-item">{{char.score}}</span>
                                         <span class="level-item"></span>
                                         <button class="level-item"
                                                 aria-label="delete"
@@ -110,11 +107,9 @@
                                 <li v-for="char in nextRoundSorted"
                                     class="level is-marginless"
                                     v-bind:class="{ 'has-text-danger': char.npc }">
-                                    <strong
-                                            class="level-left">{{char.name}}</strong>
+                                    <strong class="level-left">{{char.name}}</strong>
                                     <div class="level-right">
-                                        <span
-                                                class="level-item">{{char.score}}</span>
+                                        <span class="level-item">{{char.score}}</span>
                                         <span class="level-item"></span>
                                         <button class="level-item"
                                                 aria-label="delete"
@@ -134,11 +129,8 @@
                             Round 💫</button>
                     </div>
                     <div class="card-content has-text-centered"
-                            v-if="loading">
-                        <progress class="progress is-large is-primary"
-                                    max="100"></progress>
-                        <strong class="has-text-primary">Restarting
-                            Current Round</strong>
+                         v-if="loading">
+                        <loading></loading>
                     </div>
                 </div>
             </section>
@@ -147,6 +139,10 @@
 </template>
 
 <script>
+    import loading from 'loading.vue';
+    import initList from 'initList.vue';
+    import initListItem from 'initListItem.vue';
+
     export default {
         data: function () {
             return {
