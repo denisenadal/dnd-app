@@ -39,10 +39,6 @@ strong {
   padding-bottom: 1.5rem;
 }
 
-.card-content > div {
-  margin-bottom: 1.5rem;
-}
-
-.card-content > div:not(:first-of-type) {
-  margin-top: 3rem;
+.init-list {
+  margin-bottom: 3em;
 }

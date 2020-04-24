@@ -5,17 +5,7 @@
                 <div class="card">
                     <div class="card-content">
                         <h2 class="title">Add Character</h2>
-                        <div v-if="errors.length"
-                             class="message is-danger">
-                            <p class="message-body content">
-                                <strong>Please correct the following
-                                    error(s):</strong>
-                                <ul>
-                                    <li v-for="error in errors">
-                                        {{ error }}</li>
-                                </ul>
-                            </p>
-                        </div>
+                      <form-errors v-if="errors.length" v-bind:errors="errors"></form-errors>
                         <form action=""
                               @submit="addChar">
                             <div class="field">
@@ -68,20 +58,20 @@
 
             </section>
             <section class="column is-half-tablet is-two-thirds-desktop">
-                <div class="card shadow-sm is-clearfix">
-                    <div class="card-content">
+                <div class="card shadow-sm">
+                    <div class="card-content is-clearfix">
                         <h2 class="title">Initiative Order</h2>
                         <em v-if="!currentRound.length && !nextRound.length"
                             class="text-muted">Add a character to get
                             started</em>
                         <init-list v-if="!loading && currentRound.length"
                                    round="current"
-                                   v-bind:characters="currentRound"
+                                   v-bind:characters="currentSorted"
                                    @removed="removeChar"
                                    @take-turn="takeTurn"></init-list>
                         <init-list v-if="!loading && nextRound.length"
                                    round="next"
-                                   v-bind:characters="nextRound"
+                                   v-bind:characters="nextSorted"
                                    @removed="removeChar"></init-list>
                         <button class="button  is-pulled-right"
                                 v-if="currentRound.length && nextRound.length"
@@ -101,13 +91,15 @@
 <script>
     import loading from './loading.vue';
     import initList from './initList.vue';
-    import addForm from './addForm.vue';
+    import form from './form.vue';
+    import formErrors from './formErrors.vue';
 
     export default {
         components: {
             "loading": loading,
             "init-list": initList,
-            "add-form": addForm
+            "form": form,
+            "form-errors":formErrors
         },
         data: function () {
             return {
@@ -127,6 +119,12 @@
         computed: {
             charsByName: function (round) {
                 return _.orderBy(this[round], 'name', 'asc')
+            },
+          currentSorted: function () {
+                return _.orderBy(this.currentRound, 'score', 'desc')
+            },
+          nextSorted: function () {
+                return _.orderBy(this.nextRound, 'score', 'desc')
             }
         },
 

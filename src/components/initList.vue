@@ -1,9 +1,9 @@
 <template>
-    <div class="mt">
+    <div class="init-list">
         <h3 class="subtitle is-marginless">{{ round| capitalize}}
             Round</h3>
         <ul class="">
-            <li v-for="(char,index) in charactersSorted"
+            <li v-for="(char,index) in characters"
                 class="level is-marginless"
                 v-bind:class="{ 'has-text-danger': char.npc }">
                 <strong class="level-left">{{char.name}}</strong>
@@ -28,11 +28,6 @@
 <script>
     export default {
         name: "init-list",
-        computed: { 
-             charactersSorted: function () {
-                return _.orderBy(this.characters, 'score', 'desc')
-            }
-        },
         methods: {
           removeChar: function (char) {
                 this.$emit('removed', char, this.round)
