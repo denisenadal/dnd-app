@@ -1,15 +1,14 @@
 {
-  "//1": "describes your app and its dependencies",
-  "//2": "https://docs.npmjs.com/files/package.json",
-  "//3": "updating this file will download and update your packages",
   "name": "my-glitch-app",
   "version": "0.0.1",
   "description": "What am I about?",
   "main": "main.js",
   "scripts": {
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server --inline --hot --host 0.0.0.0 --public $PROJECT_DOMAIN.glitch.me"
   },
   "dependencies": {
+    "lodash": "^4.17.15",
+    "bulma": "^0.8.2",
     "connect": "^3.6.0",
     "serve-static": "^1.12.1",
     "vue": "^2.2.4",
@@ -17,11 +16,9 @@
     "webpack-dev-server": "^2.4.1",
     "vue-loader": "^11.1.4",
     "vue-template-compiler": "^2.2.4",
-    "css-loader": "^0.27.3",
+    "css-loader": "^3.5.2",
     "normalize.css": "^5.0.0",
-    "style-loader": "^0.13.2",
-    "lodash": "^4.17.15",
-    "bulma": "^0.8.2"
+    "style-loader": "^0.13.2"
   },
   "repository": {
     "url": "https://glitch.com/#!/project/welcome-project"

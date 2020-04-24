@@ -1,10 +1,15 @@
-import Vue from 'vue'
-import App from './components/App.vue'
-import _ from 'lodash'
+import Vue from 'vue';
+import App from './components/App.vue';
+import _ from 'lodash';
 
-import normalize from 'normalize.css'
+import 'normalize.css';
 import "bulma/css/bulma.css";
 
+Vue.filter('capitalize', function (value) {
+  if (!value) return ''
+  value = value.toString()
+  return value.charAt(0).toUpperCase() + value.slice(1)
+})
 
 
 var app = new Vue({
