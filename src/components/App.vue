@@ -6,53 +6,7 @@
                     <div class="card-content">
                         <h2 class="title">Add Character</h2>
                       <form-errors v-if="errors.length" v-bind:errors="errors"></form-errors>
-                        <form action=""
-                              @submit="addChar">
-                            <div class="field">
-                                <label class="label"
-                                       for="name">Character Name</label>
-                                <div class="control">
-                                    <input v-model="formEntry.name"
-                                           type="text"
-                                           placeholder="enter a name"
-                                           class="input"
-                                           name="name"
-                                           id="name"
-                                           ref="name"
-                                           autofocus />
-                                </div>
-                            </div>
-                            <div class="field">
-                                <label class="label"
-                                       for="score">Initiative
-                                    Score</label>
-                                <div class="control">
-                                    <input v-model="formEntry.score"
-                                           type="text"
-                                           placeholder="enter a number"
-                                           class="input"
-                                           name="score"
-                                           id="score"
-                                           autocomplete="false" />
-                                </div>
-                            </div>
-                            <div class="field is-grouped">
-                                <div class="control is-expanded">
-                                    <label class="checkbox"
-                                           for="npc">
-                                        <input type="checkbox"
-                                               id="npc"
-                                               name="npc"
-                                               v-model="formEntry.npc">
-                                        NPC?</label>
-                                </div>
-                                <div class="control text-right">
-                                    <input value="add"
-                                           type="submit"
-                                           class="button is-primary">
-                                </div>
-                            </div>
-                        </form>
+                      <io-form v-bind:characters="allCharacters" @validation="handleErrors" @newchar="addChar"></io-form>
                     </div>
                 </div>
 
@@ -64,15 +18,15 @@
                         <em v-if="!currentRound.length && !nextRound.length"
                             class="text-muted">Add a character to get
                             started</em>
-                        <init-list v-if="!loading && currentRound.length"
+                        <io-list v-if="!loading && currentRound.length"
                                    round="current"
                                    v-bind:characters="currentSorted"
                                    @removed="removeChar"
-                                   @take-turn="takeTurn"></init-list>
-                        <init-list v-if="!loading && nextRound.length"
+                                   @take-turn="takeTurn"></io-list>
+                        <io-list v-if="!loading && nextRound.length"
                                    round="next"
                                    v-bind:characters="nextSorted"
-                                   @removed="removeChar"></init-list>
+                                   @removed="removeChar"></io-list>
                         <button class="button  is-pulled-right"
                                 v-if="currentRound.length && nextRound.length"
                                 v-on:click="resetRound()">Reset
@@ -90,15 +44,15 @@
 
 <script>
     import loading from './loading.vue';
-    import initList from './initList.vue';
-    import form from './form.vue';
+    import ioList from './ioList.vue';
+    import ioForm from './ioForm.vue';
     import formErrors from './formErrors.vue';
 
     export default {
         components: {
             "loading": loading,
-            "init-list": initList,
-            "form": form,
+            "io-list": ioList,
+            "ioForm": ioForm,
             "form-errors":formErrors
         },
         data: function () {
@@ -125,52 +79,25 @@
             },
           nextSorted: function () {
                 return _.orderBy(this.nextRound, 'score', 'desc')
-            }
+            },
+          allCharacters: function(){
+              return _.concat(this.nextRound, this.currentRound);
+          }
         },
 
         methods: {
-            initChar: function (char) {
-                return {
-                    name: _.get(char, 'name', ''),
-                    score: parseInt(_.get(char, 'score', false)) || '',
-                    npc: _.get(char, 'npc', false),
-                };
-            },
-            validate: function () {
+            handleErrors: function(isValidated, errors){
+              this.isValidated = isValidated;
+              
+              if (errors){
+                this.errors = errors;
+              }
+              else {
                 this.errors = [];
-                if (this.formEntry.name && this.formEntry.score) {
-                    var name = this.formEntry.name
-                    if (_.find(this.currentRound, function (o) { return o.name === name })) {
-                        this.errors.push('Name must be unique');
-                        this.isValidated = false;
-
-                    }
-                    else {
-                        this.isValidated = true;
-
-                    }
-                }
-                else {
-                    if (!this.formEntry.name) {
-                        this.errors.push('Character name required');
-                    }
-                    if (!this.formEntry.score) {
-                        this.errors.push('Initiative score required');
-                    }
-                    this.isValidated = false;
-                }
-                return;
+              }
             },
-            addChar: function (e) {
-                e.preventDefault();
-                this.validate();
-
-                if (this.isValidated) {
-                    var newChar = this.initChar(this.formEntry);
+            addChar: function (newChar) {
                     this.currentRound.push(newChar);
-                    this.formEntry = this.initChar();
-                    this.$refs.name.focus();
-                }
             },
             removeChar: function (char, round) {
                 var key = round + 'Round';
