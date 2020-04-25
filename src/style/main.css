@@ -1,12 +1,12 @@
-htnl,
-body,
-#app {
+html,
+body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-main.section {
+main.section,
+#app {
   flex-grow: 1;
 }
 

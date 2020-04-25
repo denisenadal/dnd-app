@@ -4,21 +4,31 @@
   "description": "What am I about?",
   "main": "main.js",
   "scripts": {
-    "start": "webpack-dev-server --inline --hot --host 0.0.0.0 --public $PROJECT_DOMAIN.glitch.me"
+    "start": "node server.js && webpack-dev-server --inline --hot --host 0.0.0.0 --public $PROJECT_DOMAIN.glitch.me",
+    "test": " webpack-dev-server --inline --hot --host 0.0.0.0 --public localhost",
+    "serve": "node server.js"
   },
   "dependencies": {
-    "lodash": "^4.17.15",
+    "body-parser": "^1.19.0",
     "bulma": "^0.8.2",
     "connect": "^3.7.0",
+    "cors": "^2.8.5",
+    "css-loader": "^3.5.2",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "lodash": "^4.17.15",
+    "morgan": "^1.10.0",
+    "normalize.css": "^8.0.1",
     "serve-static": "^1.14.1",
+    "style-loader": "^0.13.2",
     "vue": "^2.2.4",
+    "vue-loader": "^11.1.4",
+    "vue-native-websocket": "^2.0.14",
+    "vue-template-compiler": "^2.2.4",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.1",
-    "vue-loader": "^11.1.4",
-    "vue-template-compiler": "^2.2.4",
-    "css-loader": "^3.5.2",
-    "normalize.css": "^8.0.1",
-    "style-loader": "^0.13.2"
+    "ws": "^7.2.3"
   },
   "repository": {
     "url": "https://glitch.com/~dnd-init-app"

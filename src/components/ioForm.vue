@@ -1,6 +1,9 @@
 <template>
     <form action=""
           @submit="addChar">
+        <form-errors v-if="errors.length"
+                     v-bind:errors="errors">
+        </form-errors>
         <div class="field">
             <label class="label"
                    for="name">Character Name</label>
@@ -45,31 +48,37 @@
                        class="button is-primary">
             </div>
         </div>
-    </form>        
+    </form>
 </template>
 
 <script>
+    import formErrors from './formErrors.vue';
+
     export default {
-        data: function(){
-          return {
-            formEntry: {
-                     name: '',
+        components: {
+            "form-errors": formErrors
+        },
+        data: function () {
+            return {
+                formEntry: {
+                    name: '',
                     score: '',
                     npc: false
                 },
-            errors: [],
-            isValidated: false
-          };
+                errors: [],
+                isValidated: false
+            };
         },
         methods: {
-          initChar: function (char) {
+            initChar: function (char) {
                 return {
                     name: _.get(char, 'name', ''),
                     score: parseInt(_.get(char, 'score', false)) || '',
                     npc: _.get(char, 'npc', false),
+                    round: "current"
                 };
             },
-           addChar: function (e) {
+            addChar: function (e) {
                 e.preventDefault();
                 this.validate();
 
@@ -77,11 +86,18 @@
                     var newChar = this.initChar(this.formEntry);
                     this.formEntry = this.initChar();
                     this.$refs.name.focus();
-                  
-                  this.$emit('newchar',newChar);
+
+                    var newCharList = _.concat(this.characters, newChar);
+                     var message = {
+                        "type": "updateChars",
+                        "characters": newCharList
+                    };
+                    //send updated character list to server
+                    this.$socket.sendObj(message);
                 }
             },
-          validate: function () {
+            validate: function () {
+                this.errors =[];
                 if (this.formEntry.name && this.formEntry.score) {
                     var name = this.formEntry.name
                     if (_.find(this.characters, function (o) { return o.name === name })) {
@@ -101,11 +117,10 @@
                     }
                     this.isValidated = false;
                 }
-                this.$emit('validation', this.isValidated, this.errors);
                 return;
-            },
+            }
         },
-      props: ["characters"]
+        props: ["characters"]
     }
 </script>
 
