@@ -52,6 +52,7 @@
 </template>
 
 <script>
+    import _ from 'lodash';
     import formErrors from './formErrors.vue';
 
     export default {
@@ -87,17 +88,22 @@
                     this.formEntry = this.initChar();
                     this.$refs.name.focus();
 
-                    var newCharList = _.concat(this.characters, newChar);
-                     var message = {
-                        "type": "updateChars",
-                        "characters": newCharList
-                    };
-                    //send updated character list to server
-                    this.$socket.sendObj(message);
+                    if (this.$socket) {
+                        var newCharList = _.concat(this.characters, newChar);
+                        var message = {
+                            "type": "updateChars",
+                            "characters": newCharList
+                        };
+                        //send updated character list to server
+                        this.$socket.sendObj(message);
+                    }
+                    else{
+                        this.$emit('addChar',newChar);
+                    }
                 }
             },
             validate: function () {
-                this.errors =[];
+                this.errors = [];
                 if (this.formEntry.name && this.formEntry.score) {
                     var name = this.formEntry.name
                     if (_.find(this.characters, function (o) { return o.name === name })) {

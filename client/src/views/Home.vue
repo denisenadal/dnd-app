@@ -1,16 +1,18 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <h1>home page content</h1>
-    </div>
+        <login></login>
+  </div>
 </template>
 
 <script>
 // @ is an alias to /src
+    import login from './../components/login.vue';
 
 export default {
   name: 'Home',
+  props: ['groupId'],
   components: {
-  }
+        "login": login
+      }
 }
 </script>

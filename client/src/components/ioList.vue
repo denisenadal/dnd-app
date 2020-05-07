@@ -3,7 +3,7 @@
     <h3 class="subtitle is-marginless">{{ round| capitalize}}
       Round</h3>
     <ul class="">
-      <li v-for="(char,index) in characters"
+      <li v-for="char in characters"
           class="io-entry is-marginless"
           v-bind:class="{ 'has-text-danger': char.npc }">
         <strong class="io-name">{{char.name}}</strong>
@@ -23,25 +23,32 @@
 </template>
 
 <script>
+  import _ from 'lodash';
   export default {
     name: "io-list",
+    props: ['round', 'characters'],
     methods: {
       updateCharHandler: function (newCharList) {
-        var message = {
-          "type": "updateChars",
-          "characters": newCharList
-        };
-        //send updated character list to server
-        this.$socket.sendObj(message);
+        if (this.$socket) {
+          var message = {
+            "type": "updateChars",
+            "characters": newCharList
+          };
+          //send updated character list to server
+          this.$socket.sendObj(message);
+        }
+        else {
+          this.$emit('updateChars', newCharList);
+        }
       },
       removeChar: function (char) {
         var newCharList = _.pull(this.characters, char);
         this.updateCharHandler(newCharList);
       },
       takeTurn: function (char) {
-        var fullList =  _.cloneDeep(this.$parent._props.characters);
-        var newCharList = _.map(fullList, function(c){
-          if(c.name === char.name){
+        var fullList = _.cloneDeep(this.$parent.characters);
+        var newCharList = _.map(fullList, function (c) {
+          if (c.name === char.name) {
             c.round = "next";
           }
           return c;
@@ -55,8 +62,7 @@
         }
         return "is-invisible";
       }
-    },
-    props: ['round', 'characters']
+    }
   }
 </script>
 
@@ -79,5 +85,4 @@
   .io-name {
     flex-grow: 1;
   }
-
 </style>

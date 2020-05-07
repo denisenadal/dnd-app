@@ -4,7 +4,7 @@
         <strong>Please correct the following
             error(s):</strong>
         <ul>
-            <li v-for="error in errors">
+            <li v-for="error in errors" v-bind:key="error">
                 {{ error }}</li>
         </ul>
     </p>

@@ -1,14 +1,22 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Tracker from '../views/Tracker.vue'
 
 Vue.use(VueRouter)
 
-  const routes = [
+const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    props: { 'groupId': null }
+  },
+  {
+    path: '/tracker',
+    name: 'Tracker',
+    component: Tracker,
+    props: { 'groupId': 1234 }
   },
   {
     path: '/about',
