@@ -63,7 +63,7 @@
                 }
                 else {
                     let id = joinGroup ? this.requested : 1000;
-                    this.$emit('join',id);
+                    this.$store.commit('addGroupId', id);
                 }
             }
         }

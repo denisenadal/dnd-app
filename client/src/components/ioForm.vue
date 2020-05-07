@@ -70,6 +70,11 @@
                 isValidated: false
             };
         },
+        computed: {
+            characters: function () {
+                return this.$store.state.characters
+            },
+        },
         methods: {
             initChar: function (char) {
                 return {
@@ -84,22 +89,11 @@
                 this.validate();
 
                 if (this.isValidated) {
-                    var newChar = this.initChar(this.formEntry);
+                    let char = this.initChar(this.formEntry);
                     this.formEntry = this.initChar();
                     this.$refs.name.focus();
 
-                    if (this.$socket) {
-                        var newCharList = _.concat(this.characters, newChar);
-                        var message = {
-                            "type": "updateChars",
-                            "characters": newCharList
-                        };
-                        //send updated character list to server
-                        this.$socket.sendObj(message);
-                    }
-                    else{
-                        this.$emit('addChar',newChar);
-                    }
+                    this.$store.commit('addCharacter', char);
                 }
             },
             validate: function () {
@@ -126,7 +120,6 @@
                 return;
             }
         },
-        props: ["characters"]
     }
 </script>
 

@@ -13,8 +13,7 @@
         </div>
       </div>
     </header>
-    <login v-if="!groupId"
-           @join="joinGroup"></login>
+    <login v-if="!groupId"></login>
 
     <main class="section"
           v-if="groupId">
@@ -24,8 +23,7 @@
             <div class="card">
               <div class="card-content">
                 <h2 class="title">Add Character</h2>
-                <io-form v-bind:characters="characters"
-                         @addChar="addChar"></io-form>
+                <io-form></io-form>
               </div>
             </div>
           </section>
@@ -38,14 +36,10 @@
                     class="text-muted">Add a character to get
                   started</em>
                 <io-list v-if="!loading && currentRound.length"
-                         round="current"
-                         v-bind:characters="currentSorted"
-                         @updateChars="updateChars">
+                         round="current">
                 </io-list>
                 <io-list v-if="!loading && nextRound.length"
-                         round="next"
-                         v-bind:characters="nextSorted"
-                         @updateChars="updateChars"></io-list>
+                         round="next"></io-list>
                 <button class="button  is-pulled-right"
                         v-if="currentRound.length && nextRound.length"
                         v-on:click="resetRound()">Reset
@@ -78,68 +72,24 @@
       "io-list": ioList,
       "ioForm": ioForm
     },
-    data: function () {
-      return {
-        groupId: null,
-        characters: [],
-        loading: false
-      };
-    },
     computed: {
+      groupId() {
+        return this.$store.state.groupId
+      },
+      characters() {
+        return this.$store.state.characters
+      },
+      loading() {
+        return this.$store.state.loading
+      },
       currentRound: function () {
-        return _.filter(this.characters, function (c) { return c.round === 'current' });
+        return this.$store.getters.currentRound;
       },
       nextRound: function () {
-        return _.filter(this.characters, function (c) { return c.round === 'next' });
+        return this.$store.getters.nextRound;
       },
-      charsByName: function (round) {
-        return _.orderBy(this[round], 'name', 'asc')
-      },
-      currentSorted: function () {
-        var current = this.currentRound;
-        return _.orderBy(current, 'score', 'desc')
-      },
-      nextSorted: function () {
-        var next = this.nextRound;
-        return _.orderBy(next, 'score', 'desc')
-      }
-    },
-
-    methods: {
-      joinGroup: function (id) {
-        this.groupId = id;
-      },
-      addChar: function (char) {
-        this.characters.push(char);
-      },
-      updateChars: function (charList) {
-        this.characters = charList;
-        if (this.currentRound.length == 0) {
-          this.resetRound(true);
-        }
-      },
-      resetRound: function (auto) {
-        //if the reset is triggered automatically, use the loading component
-        if (auto) {
-          this.loading = true;
-          var vm = this;
-          setTimeout(function () {
-            vm.resetRound();
-            vm.loading = false;
-          }, 1000);
-        }
-        _.forEach(this.characters, function (char) {
-          char.round = 'current';
-        });
-
-        if (this.$socket) {
-          var message = {
-            "type": "updateChars",
-            "characters": this.characters
-          };
-          //send updated character list to server
-          this.$socket.sendObj(message);
-        }
+      resetRound: function(){
+        this.$store.commit('resetRound', null);
       }
     }
   }

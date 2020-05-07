@@ -26,35 +26,19 @@
   import _ from 'lodash';
   export default {
     name: "io-list",
-    props: ['round', 'characters'],
+    props: ['round'],
+    computed: {
+      characters() {
+        let chars = this.round + 'Round';
+        return this.$store.getters[chars];
+      }
+    },
     methods: {
-      updateCharHandler: function (newCharList) {
-        if (this.$socket) {
-          var message = {
-            "type": "updateChars",
-            "characters": newCharList
-          };
-          //send updated character list to server
-          this.$socket.sendObj(message);
-        }
-        else {
-          this.$emit('updateChars', newCharList);
-        }
-      },
       removeChar: function (char) {
-        var newCharList = _.pull(this.characters, char);
-        this.updateCharHandler(newCharList);
+        this.$store.dispatch('handleRemoveCharacter', char);
       },
       takeTurn: function (char) {
-        var fullList = _.cloneDeep(this.$parent.characters);
-        var newCharList = _.map(fullList, function (c) {
-          if (c.name === char.name) {
-            c.round = "next";
-          }
-          return c;
-        });
-
-        this.updateCharHandler(newCharList);
+        this.$store.dispatch('handleTakeTurn', char);
       },
       active: function (char) {
         if (this.round === "current" && _.indexOf(this.characters, char) === 0) {
