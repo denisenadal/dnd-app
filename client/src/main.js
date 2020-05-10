@@ -19,10 +19,12 @@ const store = new Vuex.Store({
       return state.characters;
     },
     currentRound: function (state) {
-      return _.filter(state.characters, function (c) { return c.round === 'current' });
+      let chars = _.filter(state.characters, function (c) { return c.round === 'current' });
+      return _.orderBy(chars, 'score', 'desc')
     },
     nextRound: function (state) {
-      return _.filter(state.characters, function (c) { return c.round === 'next' });
+      let chars = _.filter(state.characters, function (c) { return c.round === 'next' });
+      return _.orderBy(chars, 'score', 'desc')
     }
   },
   mutations: {
