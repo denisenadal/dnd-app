@@ -58,7 +58,6 @@
 </template>
 
 <script>
-  import _ from 'lodash';
   import login from './components/login.vue';
   import loading from './components/loading.vue';
   import ioList from './components/ioList.vue';
@@ -87,9 +86,19 @@
       },
       nextRound: function () {
         return this.$store.getters.nextRound;
-      },
-      resetRound: function(){
-        this.$store.commit('resetRound', null);
+      }
+    },
+    methods: {
+      resetRound: function () {
+        let message;
+        //send to server
+        if(this.$store.getters.currentRound.length > 1){
+          message = { type: 'resetRound' }
+        }
+        else{
+          message = { type: 'triggerReset' }
+        }
+        this.$socket.sendObj(message);
       }
     }
   }

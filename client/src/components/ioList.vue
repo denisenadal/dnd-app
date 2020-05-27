@@ -35,10 +35,20 @@
     },
     methods: {
       removeChar: function (char) {
-        this.$store.dispatch('handleRemoveCharacter', char);
+        //send to server
+        let message = { type: 'removeChar', character: char }
+        this.$socket.sendObj(message);
       },
       takeTurn: function (char) {
-        this.$store.dispatch('handleTakeTurn', char);
+        let message;
+        //send to server
+        if (this.$store.getters.currentRound.length > 1) {
+          message = { type: 'takeTurn', character: char }
+        }
+        else {
+          message = { type: 'triggerReset' }
+        }
+        this.$socket.sendObj(message);
       },
       active: function (char) {
         if (this.round === "current" && _.indexOf(this.characters, char) === 0) {

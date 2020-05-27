@@ -4,8 +4,8 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import VueNativeSock from 'vue-native-websocket';
 import App from './App.vue';
-const PORT = process.env.PORT || 8080;
-const HOST = process.env.HOST || 'localhost';
+const PORT =  '8181';
+const HOST = 'localhost';
 
 //vue configuration
 Vue.config.productionTip = false;
@@ -36,42 +36,31 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    addGroupId: function (state, id) {
-      state.groupId = id;
+    SOCKET_addGroupId: function (state, message) {
+      state.groupId = message.group.groupId;
+      state.characters = [];
+      state.characters = message.group.characters;
     },
-    addCharacter: function (state, char) {
-      state.characters.push(char);
+    SOCKET_loading: function(state, message){
+      state.loading = message.loading;
+      setTimeout(function () {
+        state.loading = false;
+      }, 1000);
     },
-    loadCharacterList: function (state, chars) {
-      state.characters = chars;
-    },
-    removeCharacter: function (state, char) {
-      let updated = _.filter(state.characters, function (c) { return c.name !== char.name });
-      state.characters = updated;
-    },
-    takeTurn: function (state, char) {
-      let updated = _.map(state.characters, function (c) {
-        if (c.name === char.name) {
-          c.round = "next";
-        }
-        return c;
-      });
-      state.characters = updated;
-    },
-    resetRound: function (state) {
-      _.forEach(state.characters, function (char) {
-        char.round = 'current';
-      });
+    SOCKET_loadCharacterList: function (state, message) {
+      state.characters = message.characters;
     },
     SOCKET_ONOPEN(state, event) {
       Vue.prototype.$socket = event.currentTarget
       state.socket.isConnected = true
+      //console.log('connected');
     },
     SOCKET_ONCLOSE(state, event) {
       state.socket.isConnected = false
     },
     SOCKET_ONERROR(state, event) {
-      console.error(state, event)
+      let err = event.err ? event.err : "unspecified errors";
+      alert(err);
     },
     // default handler called for all methods
     SOCKET_ONMESSAGE(state, message) {
@@ -79,40 +68,13 @@ const store = new Vuex.Store({
     },
     // mutations for reconnect methods
     SOCKET_RECONNECT(state, count) {
-      console.info(state, count)
+      //console.info(state, count)
     },
     SOCKET_RECONNECT_ERROR(state) {
       state.socket.reconnectError = true;
     },
   },
-  actions: {
-    handleRemoveCharacter: function (context, char) {
-      context.commit('removeCharacter', char);
-      if (context.getters.currentRound.length === 0) {
-        context.state.loading = true;
-        setTimeout(function () {
-          context.commit('resetRound');
-          context.state.loading = false;
-        }, 1000);
-      }
-    },
-    handleTakeTurn: function (context, char) {
-      context.commit('takeTurn', char);
-      if (context.getters.currentRound.length === 0) {
-        context.state.loading = true;
-        setTimeout(function () {
-          context.commit('resetRound');
-          context.state.loading = false;
-        }, 1000);
-      }
-    },
-    handleSocketUpdate: function (context, changeSet) {
-      //send change to server
-      Vue.prototype.$socket.send(message);
-      this.$options.sockets.sendObj({ some: data })
-      //message from server should update local list
-    }
-  }
+  actions: { }
 })
 
 //init sockets
@@ -135,35 +97,5 @@ Vue.filter('capitalize', function (value) {
 new Vue({
   store: store,
   render: function (h) { return h(App) },
-  beforeMount: function () {
-    this.$options.sockets.onmessage = (msg) => {
-      var message = JSON.parse(msg.data)
-
-      switch (message.type) {
-        case "joinedGroup":
-          this.$store.commit('addGroupId', message.data.groupId);
-          this.$store.commit('loadCharacterList', message.data.characters);
-          break;
-        case "addChar":
-          this.$store.commit('addCharacter', message.data.character);
-          break;
-        case "removeChar":
-          this.$store.commit('removeCharacter', message.data.character);
-          break;
-        case "takeTurn":
-          this.$store.commit('takeTurn', message.data.character);
-          break;
-        case "updatedChars":
-          this.$store.commit('loadCharacterList', message.data.characters);
-          break;
-        case "ping":
-          console.log('ping received');
-          break;
-        default:
-        //do whatever
-      }
-    }
-
-
-  }
+  beforeMount: function () {}
 }).$mount('#app')

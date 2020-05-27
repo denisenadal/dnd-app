@@ -55,15 +55,14 @@
                 if(this.$socket){
                 let id = joinGroup ? this.requested : null;
                     var message = {
-                        "type": "joinRequest",
+                        "type": "joinGroup",
                         "groupId": id
                     };
                     //send request to start/join round to server
                     this.$socket.sendObj(message);
                 }
                 else {
-                    let id = joinGroup ? this.requested : 1000;
-                    this.$store.commit('addGroupId', id);
+                    console.log("can't join- no active sockets");
                 }
             }
         }

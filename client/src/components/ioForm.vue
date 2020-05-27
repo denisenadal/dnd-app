@@ -89,11 +89,14 @@
                 this.validate();
 
                 if (this.isValidated) {
+                    //format character
                     let char = this.initChar(this.formEntry);
+                    //reset form
                     this.formEntry = this.initChar();
                     this.$refs.name.focus();
-
-                    this.$store.commit('addCharacter', char);
+                    //send to server
+                    let message = {type:'addChar',character: char}
+                    this.$socket.sendObj(message);
                 }
             },
             validate: function () {
