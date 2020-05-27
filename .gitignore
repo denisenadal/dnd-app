@@ -50,3 +50,6 @@ mockups/
 archive/
 .sass-cache
 public/
+#other stuff
+dist/*
+client/dist*
