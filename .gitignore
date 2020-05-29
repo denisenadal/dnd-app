@@ -53,3 +53,4 @@ public/
 #other stuff
 dist/*
 client/dist*
+client/dist/*
