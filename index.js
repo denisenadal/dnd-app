@@ -1,20 +1,23 @@
 const express = require('express');
 const cors = require('cors');
+const subdomain = require('express-subdomain');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const webSocket = require('ws');
 const _ = require('lodash');
 const wsHelper = require('./socket.js');
+require('dotenv').config();
 
 const app = express();
 
 //MIDDLEWARE & CONFIGURATION
-app.set('port', (process.env.PORT || 8181));
+app.set('port', (process.env.PORT || 8080));
+app.use(subdomain('dnd', function (req, res, next) {
+    next();
+}));
+app.use(bodyParser.json());
 app.use(morgan('tiny'));
 app.use(cors());
-app.use(bodyParser.json());
-app.use(express.static('dist'));
-// TODO verify dist location
 
 //ROUTES
 app.get('/test', (req, res) => {

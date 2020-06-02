@@ -4,8 +4,8 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import VueNativeSock from 'vue-native-websocket';
 import App from './App.vue';
-const PORT =  '8181';
-const HOST = 'localhost';
+const PORT = process.env.PORT || 8080;
+const HOST = process.env.HOST || 'dnd.localhost';
 
 //vue configuration
 Vue.config.productionTip = false;
