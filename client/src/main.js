@@ -4,8 +4,9 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import VueNativeSock from 'vue-native-websocket';
 import App from './App.vue';
-const PORT = process.env.PORT || 8080;
-const HOST = process.env.HOST || 'dnd.localhost';
+const SERVER_PORT =  8181;
+const HOST = 'dnd.denisenadal.com';
+//const HOST = "dnd.localhost";
 
 //vue configuration
 Vue.config.productionTip = false;
@@ -60,7 +61,7 @@ const store = new Vuex.Store({
     },
     SOCKET_ONERROR(state, event) {
       let err = event.err ? event.err : "unspecified errors";
-      alert(err);
+      console.log(err);
     },
     // default handler called for all methods
     SOCKET_ONMESSAGE(state, message) {
@@ -78,7 +79,7 @@ const store = new Vuex.Store({
 })
 
 //init sockets
-Vue.use(VueNativeSock, 'ws://' + HOST + ':' + PORT, {
+Vue.use(VueNativeSock, 'ws://' + HOST + ':' + SERVER_PORT, {
   format: 'json',
   reconnection: true,
   reconnectionAttempts: 5,

@@ -1,8 +1,6 @@
 const _ = require('lodash');
 
 class wsHelper {
-    groups = [];
-
     constructor(wss) {
         this.wss = wss;
         const firstGroup = this.initGroup();
